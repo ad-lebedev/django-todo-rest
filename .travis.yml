@@ -9,4 +9,4 @@ env:
 install:
   - pip install -r ./todo-project/requirements.txt
 script:
-  - python manage.py test
+  - python ./todo-project/manage.py test
