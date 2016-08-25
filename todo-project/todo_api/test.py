@@ -25,7 +25,7 @@ class ToDoAPITestCase(APITestCase):
             password=cls.password)
         cls.token = Token.objects.create(user=cls.user).key
 
-        cls.todo = mixer.cycle(6).blend('todo.ToDo', created_by=cls.user)
+        cls.todo = mixer.cycle(7).blend('todo.ToDo', created_by=cls.user)
 
     def test_user_can_authenticate_with_token(self):
         """
@@ -47,8 +47,23 @@ class ToDoAPITestCase(APITestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), len(self.todo))
 
-    # User can filter TODOs: get only active TODOs or only completed TODOs;
-    #
+    def test_user_can_filter_todo_by_status(self):
+        """
+        Test that user can get only active or only completed ToDos
+        """
+        for todo in self.todo[:3]:
+            todo.completed = True
+            todo.save()
+
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token)
+        response = self.client.get('/todo/active/')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.data), 4)
+
+        response = self.client.get('/todo/completed/')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.data), 3)
+
     # User can create new TODOs;
     #
     # User can change TODOs;

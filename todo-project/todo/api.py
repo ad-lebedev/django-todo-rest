@@ -1,6 +1,7 @@
 # coding=utf-8
 from __future__ import unicode_literals
 
+from rest_framework.decorators import list_route
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
@@ -19,5 +20,19 @@ class ToDoViewSet(ModelViewSet):
     def list(self, request, *args, **kwargs):
         user = self.request.user
         queryset = self.model.objects.by_user(user)
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
+
+    @list_route(methods=['get'])
+    def completed(self, request):
+        user = self.request.user
+        queryset = self.model.objects.by_user(user).completed()
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
+
+    @list_route(methods=['get'])
+    def active(self, request):
+        user = self.request.user
+        queryset = self.model.objects.by_user(user).active()
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
