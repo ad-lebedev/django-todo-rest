@@ -1,1 +1,6 @@
 Django==1.10
+djangorestframework==3.4.5
+fake-factory==0.5.7
+mixer==5.5.7
+python-dateutil==2.5.3
+six==1.10.0
