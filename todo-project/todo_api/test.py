@@ -7,7 +7,9 @@ from rest_framework.test import APITestCase
 
 from mixer.backend.django import mixer
 
+from todo.models import ToDo
 from todo_api.serializers import SignInSerializer
+from todo.serializers import ToDoSerializer
 
 __author__ = 'ad'
 __date__ = '20/08/16'
@@ -63,6 +65,30 @@ class ToDoAPITestCase(APITestCase):
         response = self.client.get('/todo/completed/')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(response.data), 3)
+
+    def test_user_can_create_todo(self):
+        """
+        Test that user can create new ToDo
+        """
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token)
+        request_data = ToDoSerializer({
+            'title': 'Create new ToDo via this API'
+        }).data
+        response = self.client.post('/todo/', data=request_data)
+        # Checks that valid status code has been returned
+        self.assertEqual(response.status_code, 201)
+        # Checks that  objects count has been increased
+        todo = ToDo.objects.by_user(self.user)
+        self.assertEqual(todo.count(), len(self.todo) + 1)
+
+        # Checks that object with valid `title` and `created_by` values
+        # has been created
+        try:
+            new_todo = ToDo.objects.get(title='Create new ToDo via this API')
+        except ToDo.DoesNotExist:
+            new_todo = None
+        self.assertIsNotNone(new_todo)
+        self.assertEqual(new_todo.created_by, self.user)
 
     # User can create new TODOs;
     #

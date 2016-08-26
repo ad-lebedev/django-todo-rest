@@ -1,6 +1,7 @@
 # coding=utf-8
 from __future__ import unicode_literals
 
+from rest_framework import status
 from rest_framework.decorators import list_route
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
@@ -22,6 +23,10 @@ class ToDoViewSet(ModelViewSet):
         queryset = self.model.objects.by_user(user)
         serializer = self.serializer_class(queryset, many=True)
         return Response(serializer.data)
+
+    def perform_create(self, serializer):
+        user = self.request.user
+        serializer.save(created_by=user)
 
     @list_route(methods=['get'])
     def completed(self, request):
