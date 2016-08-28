@@ -1,7 +1,6 @@
 # coding=utf-8
 from __future__ import unicode_literals
 
-from rest_framework import status
 from rest_framework.decorators import list_route
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
@@ -17,6 +16,7 @@ class ToDoViewSet(ModelViewSet):
     model = ToDo
     serializer_class = ToDoSerializer
     queryset = model.objects.none()
+    http_method_names = ['get', 'post']
 
     def list(self, request, *args, **kwargs):
         user = self.request.user
