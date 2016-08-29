@@ -5,6 +5,6 @@
 Web API сервер, реализующий базовый backend для приложений типа todomvc.  
 
 Сервер поддерживает 2 механизма аутентификации:
-* токены [см. документацию по DRF](http://www.django-rest-framework.org/api-guide/authentication/#tokenauthentication)
+* аутентификация на основе токенов [см. документацию по DRF](http://www.django-rest-framework.org/api-guide/authentication/#tokenauthentication)
 * двухфакторная аутентификация на основе [TOTP](https://ru.wikipedia.org/wiki/Time-based_One-time_Password_Algorithm) через Google Authenticator
 
