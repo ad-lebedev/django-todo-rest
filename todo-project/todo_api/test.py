@@ -90,12 +90,22 @@ class ToDoAPITestCase(APITestCase):
         self.assertIsNotNone(new_todo)
         self.assertEqual(new_todo.created_by, self.user)
 
-    # User can create new TODOs;
-    #
-    # User can change TODOs;
-    #
+    def test_user_can_change_todo(self):
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token)
+        todo = self.todo[0]
+        # Checks that single object can be retrieved
+        response = self.client.get('/todo/{}/'.format(todo.id))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data['title'], todo.title)
+        # Checks that object can be updated via PUT request
+        request_data = {
+            'title': todo.title,
+            'completed': 'true'
+        }
+        response = self.client.\
+            put('/todo/{}/'.format(todo.id), data=request_data)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data['title'], todo.title)
+        self.assertEqual(response.data['completed'], True)
+
     # User can remove TODOs;
-    #
-    # User can mark TODOs as completed;
-    #
-    # User can clear all completed TODOs (remove them);
