@@ -108,4 +108,9 @@ class ToDoAPITestCase(APITestCase):
         self.assertEqual(response.data['title'], todo.title)
         self.assertEqual(response.data['completed'], True)
 
-    # User can remove TODOs;
+    def test_user_can_delete_todo(self):
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token)
+        todo = self.todo[0]
+        response = self.client.delete('/todo/{}/'.format(todo.id))
+        self.assertEqual(response.status_code, 204)
+        self.assertRaises(ToDo.DoesNotExist, ToDo.objects.get, title=todo.title)

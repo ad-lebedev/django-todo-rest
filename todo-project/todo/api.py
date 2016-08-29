@@ -16,7 +16,7 @@ class ToDoViewSet(ModelViewSet):
     model = ToDo
     serializer_class = ToDoSerializer
     queryset = model.objects.all()
-    http_method_names = ['get', 'post', 'put']
+    http_method_names = ['get', 'post', 'put', 'delete']
     lookup_field = 'id'
 
     def list(self, request, *args, **kwargs):
