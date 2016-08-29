@@ -15,6 +15,8 @@ urlpatterns = [
                                namespace='rest_framework')),
     url(r'^auth-token/', auth_token.obtain_auth_token),
     url(r'^auth-totp/register/', auth_totp.obtain_secret_key),
+    url(r'^auth-totp/login/', auth_totp.totp_authenticate),
+    url(r'^auth-totp/logout/', auth_totp.totp_logout),
     url(r'^admin/', admin.site.urls),
     url(r'^docs/', schema_view),
     url(r'^', include(router.urls)),
