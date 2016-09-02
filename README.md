@@ -8,3 +8,12 @@ Web API сервер, реализующий базовый backend для пр�
 * аутентификация на основе токенов [см. документацию по DRF](http://www.django-rest-framework.org/api-guide/authentication/#tokenauthentication)
 * двухфакторная аутентификация на основе [TOTP](https://ru.wikipedia.org/wiki/Time-based_One-time_Password_Algorithm) через Google Authenticator
 
+### API endpoints
+#### Служебные
+```api-auth/``` - endpoint встроенной авторизации для Django REST Framework   
+```auth-token/``` - endpoint для Token-based авторизации  
+```auth-totp/register/``` - endpoint для регистрации двухфакторной аутентификации пользователя  
+```auth-totp/login/``` - endpoint для двухфакторной авторизации  
+
+#### Основные
+```todo/``` - endpoint приложения TODO
